@@ -1,10 +1,12 @@
 #[macro_use]
 extern crate rocket;
 
-use rocket_cors::{AllowedHeaders, AllowedMethods, AllowedOrigins, CorsOptions};
-use services::auth::obtain_authtoken;
-use services::user::{destory_user, register_user, retrive_user, udpate_user};
 use std::str::FromStr;
+
+use rocket_cors::{AllowedHeaders, AllowedMethods, AllowedOrigins, CorsOptions};
+
+use services::auth::obtain_auth_token;
+use services::user::{destroy_user, register_user, retrieve_user, update_user};
 
 mod auth;
 mod model_view;
@@ -28,8 +30,8 @@ fn rocket() -> _ {
         allow_credentials: true,
         ..Default::default()
     }
-    .to_cors()
-    .unwrap();
+        .to_cors()
+        .unwrap();
 
     rocket::build()
         .mount(
@@ -37,9 +39,9 @@ fn rocket() -> _ {
             routes![
                 obtain_authtoken,
                 register_user,
-                destory_user,
-                retrive_user,
-                udpate_user
+                destroy_user,
+                retrieve_user,
+                update_user
             ],
         )
         .attach(cors)

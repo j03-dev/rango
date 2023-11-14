@@ -1,5 +1,4 @@
 use diesel::prelude::*;
-
 use rocket::serde::{Deserialize, Serialize};
 
 use crate::auth::security::hash_password;
@@ -11,7 +10,6 @@ use crate::schema::user::username as user_name;
 
 use super::Nullable;
 use super::Repository;
-
 
 #[derive(Queryable, Serialize, Default, Debug, Clone)]
 pub struct User {
@@ -83,7 +81,7 @@ impl Repository<Self> for User {
         {
             user
         } else {
-            Vec::new()            
+            Vec::new()
         }
     }
 

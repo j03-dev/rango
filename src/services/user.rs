@@ -21,17 +21,17 @@ pub fn register_user(new_user: Json<NewUser>) -> Response {
 }
 
 #[get("/user")]
-pub fn retrive_user(auth: Authentication) -> Response {
-    User::retrive(auth.0.parse().unwrap())
+pub fn retrieve_user(auth: Authentication) -> Response {
+    User::retrieve(auth.0.parse().unwrap())
 }
 
 #[delete("/user")]
-pub fn destory_user(auth: Authentication) -> Response {
-    User::destory(auth.0.parse().unwrap())
+pub fn destroy_user(auth: Authentication) -> Response {
+    User::destroy(auth.0.parse().unwrap())
 }
 
-#[patch("/user", format="json", data="<update_user>")]
-pub fn udpate_user(auth: Authentication, update_user: Json<UpdateUser>) -> Response {
+#[patch("/user", format = "json", data = "<update_user>")]
+pub fn update_user(auth: Authentication, update_user: Json<UpdateUser>) -> Response {
     let user = User {
         id: auth.0.parse().unwrap(),
         username: update_user.username.clone(),

@@ -1,9 +1,10 @@
-pub mod user;
+use std::env;
 
 use diesel::prelude::*;
 use diesel::SqliteConnection;
 use dotenv::dotenv;
-use std::env;
+
+pub mod user;
 
 pub type Nullable = Option<String>;
 

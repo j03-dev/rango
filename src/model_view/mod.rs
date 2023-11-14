@@ -1,8 +1,8 @@
-use rocket::serde::Serialize;
 use rocket::{
     http::Status,
     serde::json::{json, Value},
 };
+use rocket::serde::Serialize;
 
 use crate::repositories::Repository;
 
@@ -21,7 +21,7 @@ pub trait ModelViewSet<S: Serialize>: Repository<S> {
         Ok(json!(Self::all()))
     }
 
-    fn retrive(id: i32) -> Response {
+    fn retrieve(id: i32) -> Response {
         if let Some(result) = Self::get(id).get(0) {
             Ok(json!(result))
         } else {
@@ -29,7 +29,7 @@ pub trait ModelViewSet<S: Serialize>: Repository<S> {
         }
     }
 
-    fn destory(id: i32) -> Response {
+    fn destroy(id: i32) -> Response {
         if Self::delete(id) {
             Ok(json!("deleted success"))
         } else {
