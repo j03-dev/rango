@@ -18,18 +18,19 @@ pub struct Credentail {
 #[post("/auth", format = "json", data = "<credential>")]
 pub fn obtain_authtoken(credential: Json<Credentail>) -> Response {
     if let Some(user) = User::get_by_username(&credential.username).get(0) {
-        if user.password == hash_password(&credential.password) {
+        return if user.password == hash_password(&credential.password) {
             let header = Header::default();
             let cailms = RegisteredClaims {
                 subject: Some(user.id.to_string()),
                 ..Default::default()
             };
-
-            return match Token::new(header, cailms).sign_with_key(&signe_key()) {
+            match Token::new(header, cailms).sign_with_key(&signe_key()) {
                 Ok(token) => Ok(json!({"token": token.as_str()})),
                 Err(_) => Err(Status::InternalServerError),
-            };
-        }
+            }
+        } else {
+            Err(Status::Unauthorized)
+        };
     }
-    Err(Status::Unauthorized)
+    Err(Status::NotFound)
 }
