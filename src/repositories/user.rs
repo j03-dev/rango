@@ -22,7 +22,7 @@ pub struct User {
     pub is_admin: bool,
 }
 
-#[derive(Insertable, Deserialize)]
+#[derive(Insertable, Deserialize, Default)]
 #[diesel(table_name = table_user)]
 pub struct NewUser {
     pub username: String,
@@ -74,37 +74,27 @@ impl Repository<Self> for User {
     }
 
     fn get(id: i32) -> Vec<Self> {
-        if let Ok(user) = users
+        users
             .find(id)
             .limit(1)
             .load::<Self>(&mut Self::establish_connection())
-        {
-            user
-        } else {
-            Vec::new()
-        }
+            .unwrap_or_default()
     }
 
     fn all() -> Vec<Self> {
-        if let Ok(user) = users.load::<Self>(&mut Self::establish_connection()) {
-            user
-        } else {
-            Vec::new()
-        }
+        users
+            .load::<Self>(&mut Self::establish_connection())
+            .unwrap_or_default()
     }
 }
 
 impl User {
     pub fn get_by_username(username: &str) -> Vec<Self> {
-        if let Ok(user) = users
+        users
             .filter(user_name.eq(username))
             .limit(1)
             .load::<Self>(&mut Self::establish_connection())
-        {
-            user
-        } else {
-            Vec::new()
-        }
+            .unwrap_or_default()
     }
 }
 

@@ -1,8 +1,8 @@
-use jwt::{Header, RegisteredClaims, Token};
 use jwt::token::signed::SignWithKey;
+use jwt::{Header, RegisteredClaims, Token};
 use rocket::http::Status;
-use rocket::serde::Deserialize;
 use rocket::serde::json::{json, Json};
+use rocket::serde::Deserialize;
 
 use crate::auth::security::{hash_password, signe_key};
 use crate::model_view::Response;
@@ -24,7 +24,12 @@ pub fn obtain_auth_token(credential: Json<Credential>) -> Response {
                 ..Default::default()
             };
             match Token::new(header, claims).sign_with_key(&signe_key()) {
-                Ok(token) => Ok(json!({"token": token.as_str()})),
+                Ok(token) => Ok(json!(
+                    {
+                        "user": json!(user),
+                        "token": token.as_str()
+                    }
+                )),
                 Err(_) => Err(Status::InternalServerError),
             }
         } else {

@@ -6,7 +6,7 @@ use crate::{
     repositories::user::{NewUser, UpdateUser, User},
 };
 
-#[post("/register", format = "json", data = "<new_user>")]
+#[post("/user", format = "json", data = "<new_user>")]
 pub fn register_user(new_user: Json<NewUser>) -> Response {
     let user = User {
         username: new_user.username.clone(),
