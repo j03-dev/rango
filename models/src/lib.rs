@@ -5,9 +5,9 @@ use serde::Deserialize;
 pub struct User {
     #[model(primary_key = true, auto = true)]
     pub id: i32,
-    #[model(unique = true, null = false, size = 100)]
-    pub username: String,
     #[model(unique = true, null = false)]
+    pub username: String,
+    #[model(unique = true, null = false, size = 100)]
     pub email: String,
     #[model(null = false)]
     pub password: String,
