@@ -1,0 +1,16 @@
+[package]
+name = "migrate"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies.rusql-alchemy]
+version = "0.1.0"
+git = "https://github.com/j03-dev/rusql-alchemy"
+branch = "main"
+
+[dependencies.models]
+path = "../models"
+
+[dependencies]
+tokio = { version = "^1.38.0", features = ["macros", "rt-multi-thread"] }

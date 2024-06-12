@@ -1,0 +1,13 @@
+[package]
+name = "models"
+version = "0.1.0"
+edition = "2021"
+
+
+[dependencies.rusql-alchemy]
+version = "0.1.0"
+git = "https://github.com/j03-dev/rusql-alchemy"
+branch = "main"
+
+[dependencies]
+serde = { version = "^1.0.203", features = ["derive"] }
