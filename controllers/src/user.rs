@@ -4,7 +4,7 @@ use super::custome_response::*;
 
 use models::User as UserModel;
 
-use rocket::{fairing::AdHoc, State};
+use rocket::State;
 use rusql_alchemy::prelude::*;
 use serde::Deserialize;
 
@@ -16,8 +16,8 @@ pub struct NewUser {
     pub verification: String,
 }
 
-#[get("/", format = "json", data = "<new_user>")]
-async fn register(new_user: Json<NewUser>, app_state: &State<AppState>) -> Response {
+#[get("/user", format = "json", data = "<new_user>")]
+pub async fn register(new_user: Json<NewUser>, app_state: &State<AppState>) -> Response {
     let conn = app_state.conn.clone();
     if new_user.password == new_user.verification
         && UserModel::create(
@@ -42,13 +42,7 @@ async fn register(new_user: Json<NewUser>, app_state: &State<AppState>) -> Respo
     }
 }
 
-#[post("/")]
-fn authentication() -> Response {
+#[post("/user")]
+pub fn authentication() -> Response {
     todo!()
-}
-
-pub fn user_controler() -> AdHoc {
-    AdHoc::on_ignite("User Controler", |rocket| async {
-        rocket.mount("/user", routes![register, authentication])
-    })
 }
