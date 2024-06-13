@@ -19,7 +19,7 @@ pub struct NewUser {
     pub verification: String,
 }
 
-#[get("/", format = "json", data = "<new_user>")]
+#[post("/", format = "json", data = "<new_user>")]
 pub async fn register(new_user: Json<NewUser>, app_state: &State<AppState>) -> Response {
     let conn = app_state.conn.clone();
     if new_user.password == new_user.verification
@@ -51,7 +51,7 @@ pub struct Credential {
     pub password: String,
 }
 
-#[post("/", format = "json", data = "<cred>")]
+#[post("/auth", format = "json", data = "<cred>")]
 pub async fn authentication(cred: Json<Credential>, app_state: &State<AppState>) -> Response {
     let conn = app_state.conn.clone();
     if let Some(user) = UserModel::get(
