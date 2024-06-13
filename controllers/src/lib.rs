@@ -22,7 +22,7 @@ struct AppState {
 pub fn controller() -> AdHoc {
     AdHoc::on_ignite("Controller", |rocket| async {
         rocket
-            .mount("/user", routes![user::register, user::authentication])
+            .mount("/user", routes![user::register, user::authentication, user::retrieve])
             .manage(AppState {
                 conn: Database::new().await.conn,
             })

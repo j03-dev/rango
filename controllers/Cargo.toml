@@ -11,6 +11,9 @@ branch = "main"
 [dependencies.models]
 path = "../models"
 
+[dependencies.security]
+path = "../security"
+
 [dependencies]
 rocket = { version = "^0.5.0", features = ["json"] }
 serde = { version = "^1.0.203", features = ["derive"] }

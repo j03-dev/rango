@@ -1,7 +1,7 @@
 use rusql_alchemy::prelude::*;
 use serde::Deserialize;
 
-#[derive(Model, Deserialize, Clone)]
+#[derive(Model, Deserialize, Serialize, Clone)]
 pub struct User {
     #[model(primary_key = true, auto = true)]
     pub id: i32,
