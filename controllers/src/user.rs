@@ -38,7 +38,7 @@ pub async fn register(new_user: Json<NewUser>, app_state: &State<AppState>) -> R
             json!({ "message": "User created successfully" }),
         ))
     } else {
-        Ok(Custom(
+        Err(Custom(
             Status::BadRequest,
             json!({ "message": "User is alredy exist or password is not match" }),
         ))
