@@ -1,7 +1,5 @@
-use crypto::digest::Digest;
-use crypto::sha3;
-use hmac::digest::core_api::CoreWrapper;
-use hmac::digest::KeyInit;
+use crypto::{digest::Digest, sha3};
+use hmac::digest::{core_api::CoreWrapper, KeyInit};
 use hmac::{Hmac, HmacCore};
 use jwt::{Header, SignWithKey, Token, VerifyWithKey};
 use rocket::http::Status;
@@ -30,10 +28,8 @@ fn signe_key() -> CoreWrapper<HmacCore<Sha256>> {
 fn read_token(token_str: &str) -> Result<String, jwt::Error> {
     let token = Token::<Header, RegisteredClaims, _>::parse_unverified(token_str)?;
 
-    let secret_key = signe_key();
-
     token
-        .verify_with_key(&secret_key)
+        .verify_with_key(&signe_key())
         .and_then(|token_verify| match token_verify.claims().clone().subject {
             Some(subject) => Ok(subject),
             None => Err(jwt::Error::NoClaimsComponent),
@@ -46,6 +42,7 @@ pub fn create_new_token(claims: RegisteredClaims) -> Result<String, jwt::Error> 
     Ok(new_token.as_str().to_string())
 }
 
+#[derive(Clone)]
 pub struct Auth {
     pub subject: String,
 }
