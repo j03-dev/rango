@@ -303,8 +303,8 @@ dependencies = [
  "models",
  "rocket",
  "rocket_cors",
+ "rocket_security",
  "rusql-alchemy",
- "security",
  "serde",
 ]
 
@@ -1834,6 +1834,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "rocket_security"
+version = "0.1.0"
+source = "git+https://github.com/j03-dev/rocket_security?branch=main#c7697b1134048a97df8e6cb7340c0181a3291080"
+dependencies = [
+ "hmac",
+ "jwt",
+ "rocket",
+ "rust-crypto",
+ "sha2",
+]
+
+[[package]]
 name = "rusql-alchemy"
 version = "0.1.0"
 source = "git+https://github.com/j03-dev/rusql-alchemy?branch=main#99322f5a281771a08ef42424df7791342b10bdfc"
@@ -1985,17 +1997,6 @@ checksum = "da046153aa2352493d6cb7da4b6e5c0c057d8a1d0a9aa8560baffdd945acd414"
 dependencies = [
  "ring",
  "untrusted",
-]
-
-[[package]]
-name = "security"
-version = "0.1.0"
-dependencies = [
- "hmac",
- "jwt",
- "rocket",
- "rust-crypto",
- "sha2",
 ]
 
 [[package]]

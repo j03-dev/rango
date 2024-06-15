@@ -3,7 +3,7 @@ use crate::AppState;
 use super::custome_response::*;
 
 use models::User as UserModel;
-use security::{create_new_token, hash, Auth, RegisteredClaims};
+use rocket_security::{create_new_token, hash, Auth, RegisteredClaims};
 
 use rocket::State;
 use rusql_alchemy::prelude::*;
