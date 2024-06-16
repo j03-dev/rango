@@ -1848,7 +1848,7 @@ dependencies = [
 [[package]]
 name = "rusql-alchemy"
 version = "0.1.0"
-source = "git+https://github.com/j03-dev/rusql-alchemy?branch=main#99322f5a281771a08ef42424df7791342b10bdfc"
+source = "git+https://github.com/j03-dev/rusql-alchemy?branch=main#092c9d1afc73eec8a36bf528251513f4dd8bcc11"
 dependencies = [
  "async-trait",
  "dotenv",
@@ -1862,7 +1862,7 @@ dependencies = [
 [[package]]
 name = "rusql-alchemy-macro"
 version = "0.1.0"
-source = "git+https://github.com/j03-dev/rusql-alchemy?branch=main#99322f5a281771a08ef42424df7791342b10bdfc"
+source = "git+https://github.com/j03-dev/rusql-alchemy?branch=main#092c9d1afc73eec8a36bf528251513f4dd8bcc11"
 dependencies = [
  "proc-macro2",
  "quote",

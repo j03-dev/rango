@@ -4,7 +4,7 @@ use serde::Deserialize;
 #[derive(Model, Deserialize, Serialize, Clone)]
 pub struct User {
     #[model(primary_key = true, auto = true)]
-    pub id: i32,
+    pub id: Integer,
     #[model(unique = true, null = false)]
     pub username: String,
     #[model(unique = true, null = false, size = 100)]
@@ -20,11 +20,11 @@ pub struct User {
 #[derive(Model, Deserialize, Clone)]
 pub struct Token {
     #[model(primary_key = true, auto = true)]
-    pub id: i32,
+    pub id: Integer,
     #[model(default = "now")]
     pub created_at: DateTime,
     #[model(null = false, unique = true)]
     pub token: String,
     #[model(foreign_key = "User.id", unique = true, null = false)]
-    pub user: i32,
+    pub user: Integer,
 }
