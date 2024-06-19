@@ -3,11 +3,6 @@ name = "controllers"
 version = "0.1.0"
 edition = "2021"
 
-[dependencies.rusql-alchemy]
-version = "0.1.0"
-git = "https://github.com/j03-dev/rusql-alchemy"
-branch = "main"
-
 [dependencies.rocket_security]
 version = "0.1.0"
 git = "https://github.com/j03-dev/rocket_security"
@@ -20,3 +15,5 @@ path = "../models"
 rocket = { version = "^0.5.0", features = ["json"] }
 rocket_cors = "0.6.0"
 serde = { version = "^1.0.203", features = ["derive"] }
+sqlx = "^0.7.0"
+rusql-alchemy = { version = "0.1.2", default-feautes = false,  features= ["postgres"] } 

@@ -4,10 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 
-[dependencies.rusql-alchemy]
-version = "0.1.0"
-git = "https://github.com/j03-dev/rusql-alchemy"
-branch = "main"
+[dependencies.rusql-alchemy] 
+version = "0.1.2"
+default-featues = false
+features = [ "postgres" ] 
 
 [dependencies.models]
 path = "../models"

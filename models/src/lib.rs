@@ -1,7 +1,7 @@
 use rusql_alchemy::prelude::*;
-use serde::Deserialize;
+use serde::Serialize;
 
-#[derive(Model, Deserialize, Serialize, Clone)]
+#[derive(Model, FromRow, Clone, Serialize)]
 pub struct User {
     #[model(primary_key = true, auto = true)]
     pub id: Integer,
@@ -17,7 +17,7 @@ pub struct User {
     pub is_admin: bool,
 }
 
-#[derive(Model, Deserialize, Clone)]
+#[derive(Model, FromRow, Clone, Serialize)]
 pub struct Token {
     #[model(primary_key = true, auto = true)]
     pub id: Integer,
