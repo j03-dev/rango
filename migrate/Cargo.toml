@@ -4,13 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 
-[dependencies.rusql-alchemy] 
-version = "0.1.2"
-default-featues = false
-features = [ "postgres" ] 
-
 [dependencies.models]
 path = "../models"
 
 [dependencies]
+rusql-alchemy = { workspace = true }
 tokio = { version = "^1.38.0", features = ["macros", "rt-multi-thread"] }

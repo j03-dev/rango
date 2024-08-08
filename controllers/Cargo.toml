@@ -12,8 +12,8 @@ branch = "main"
 path = "../models"
 
 [dependencies]
-rocket = { version = "^0.5.0", features = ["json"] }
+rocket = { workspace = true, features = ["json"] }
 rocket_cors = "0.6.0"
-serde = { version = "^1.0.203", features = ["derive"] }
-sqlx = "^0.7.0"
-rusql-alchemy = { version = "0.1.2", default-feautes = false,  features= ["postgres"] } 
+rusql-alchemy = { workspace = true }
+sqlx = { workspace = true }
+serde = { workspace = true }

@@ -2,7 +2,7 @@
 extern crate rocket;
 use rocket::fairing::AdHoc;
 use rocket_cors::{AllowedHeaders, AllowedOrigins, CorsOptions};
-use rusql_alchemy::prelude::{config::db::Database, *};
+use rusql_alchemy::prelude::*;
 
 use std::str::FromStr;
 
