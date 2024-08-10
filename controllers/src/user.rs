@@ -55,7 +55,7 @@ pub struct Credential {
 pub async fn authentication(cred: Json<Credential>, app_state: &State<AppState>) -> Response {
     let conn = app_state.conn.clone();
     if let Some(user) = UserModel::get(
-        kwargs!(email = cred.email, password = hash(&cred.password)),
+        kwargs!(email == cred.email).and(kwargs!(password == cred.password)),
         &conn,
     )
     .await
@@ -79,8 +79,39 @@ pub async fn authentication(cred: Json<Credential>, app_state: &State<AppState>)
 pub async fn retrieve(auth: Auth, app_state: &State<AppState>) -> Response {
     let conn = app_state.conn.clone();
     let id: i32 = auth.subject.parse().unwrap();
-    if let Some(user) = UserModel::get(kwargs!(id = id), &conn).await {
+    if let Some(user) = UserModel::get(kwargs!(id == id), &conn).await {
         Ok(Custom(Status::Ok, json!(user)))
+    } else {
+        Err(Custom(
+            Status::NotFound,
+            json!({ "message": "User not found" }),
+        ))
+    }
+}
+
+#[derive(Deserialize, Clone)]
+pub struct UpdateUser {
+    pub username: Option<String>,
+    pub email: Option<String>,
+}
+
+#[patch("/", format = "json", data = "<update_user>")]
+pub async fn update(
+    update_user: Json<UpdateUser>,
+    auth: Auth,
+    app_state: &State<AppState>,
+) -> Response {
+    let conn = app_state.conn.clone();
+    let id: i32 = auth.subject.parse().unwrap();
+    if let Some(mut user) = UserModel::get(kwargs!(id == id), &conn).await {
+        if let Some(email) = update_user.email.clone() {
+            user.email = email
+        }
+        if let Some(username) = update_user.username.clone() {
+            user.username = username
+        }
+        user.update(&conn).await;
+        Ok(Custom(Status::Accepted, json!({"message": "User udpated"})))
     } else {
         Err(Custom(
             Status::NotFound,

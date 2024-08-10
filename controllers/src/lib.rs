@@ -24,7 +24,7 @@ struct AppState {
 
 pub fn controller() -> AdHoc {
     let allowed_origins = AllowedOrigins::all();
-    let allowed_methods = ["Get", "Post"]
+    let allowed_methods = ["Get", "Post", "Patch", "Put", "Delete"]
         .iter()
         .map(|s| FromStr::from_str(s).unwrap())
         .collect();
@@ -42,7 +42,12 @@ pub fn controller() -> AdHoc {
         rocket
             .mount(
                 "/user",
-                routes![user::register, user::authentication, user::retrieve],
+                routes![
+                    user::register,
+                    user::authentication,
+                    user::retrieve,
+                    user::update
+                ],
             )
             .attach(cors)
             .manage(AppState {
