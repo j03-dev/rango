@@ -6,7 +6,7 @@ use rusql_alchemy::prelude::*;
 
 use std::str::FromStr;
 
-mod custome_response {
+mod custom_response {
     pub use rocket::{
         http::Status,
         response::status::Custom,

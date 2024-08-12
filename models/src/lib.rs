@@ -1,9 +1,9 @@
 use rusql_alchemy::prelude::*;
 use serde::Serialize;
 
-#[derive(Model, FromRow, Clone, Serialize)]
-pub struct User {
-    #[model(primary_key = true, auto = true)]
+#[derive(Model, FromRow, Clone, Serialize, Debug)]
+pub struct User_ {
+    #[model(primary_key = true, auto=true)]
     pub id: Integer,
     #[model(unique = true, null = false)]
     pub username: String,
@@ -14,17 +14,17 @@ pub struct User {
     #[model(default = "now")]
     pub created_at: DateTime,
     #[model(default = false)]
-    pub is_admin: bool,
+    pub is_admin: Boolean,
 }
 
 #[derive(Model, FromRow, Clone, Serialize)]
 pub struct Token {
-    #[model(primary_key = true, auto = true)]
+    #[model(primary_key = true, auto=true)]
     pub id: Integer,
     #[model(default = "now")]
     pub created_at: DateTime,
     #[model(null = false, unique = true)]
     pub token: String,
-    #[model(foreign_key = "User.id", unique = true, null = false)]
-    pub user: Integer,
+    #[model(foreign_key = "User_.id", unique = true, null = false)]
+    pub owner: Integer,
 }

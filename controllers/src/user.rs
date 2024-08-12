@@ -1,8 +1,8 @@
 use crate::AppState;
 
-use super::custome_response::*;
+use super::custom_response::*;
 
-use models::User as UserModel;
+use models::User_ as UserModel;
 use rocket_security::{create_new_token, hash, Auth, RegisteredClaims};
 
 use rocket::State;
@@ -24,13 +24,13 @@ pub async fn register(new_user: Json<NewUser>, app_state: &State<AppState>) -> R
     let conn = app_state.conn.clone();
     if new_user.password == new_user.verification
         && UserModel::create(
-            kwargs!(
+        kwargs!(
                 username = new_user.username,
                 email = new_user.email,
                 password = hash(&new_user.password)
             ),
-            &conn,
-        )
+        &conn,
+    )
         .await
     {
         Ok(Custom(
@@ -40,7 +40,7 @@ pub async fn register(new_user: Json<NewUser>, app_state: &State<AppState>) -> R
     } else {
         Err(Custom(
             Status::BadRequest,
-            json!({ "message": "User is alredy exist or password is not match" }),
+            json!({ "message": "User is already exist or password is not match" }),
         ))
     }
 }
@@ -54,11 +54,8 @@ pub struct Credential {
 #[post("/auth", format = "json", data = "<cred>")]
 pub async fn authentication(cred: Json<Credential>, app_state: &State<AppState>) -> Response {
     let conn = app_state.conn.clone();
-    if let Some(user) = UserModel::get(
-        kwargs!(email == cred.email).and(kwargs!(password == cred.password)),
-        &conn,
-    )
-    .await
+    if let Some(user) = UserModel::get(kwargs!(email == cred.email).and(kwargs!(password == hash(&cred.password))), &conn)
+        .await
     {
         let claims = RegisteredClaims {
             subject: Some(user.id.to_string()),
@@ -93,6 +90,7 @@ pub async fn retrieve(auth: Auth, app_state: &State<AppState>) -> Response {
 pub struct UpdateUser {
     pub username: Option<String>,
     pub email: Option<String>,
+    pub password: Option<String>,
 }
 
 #[patch("/", format = "json", data = "<update_user>")]
@@ -105,13 +103,16 @@ pub async fn update(
     let id: i32 = auth.subject.parse().unwrap();
     if let Some(mut user) = UserModel::get(kwargs!(id == id), &conn).await {
         if let Some(email) = update_user.email.clone() {
-            user.email = email
+            user.email = email;
         }
         if let Some(username) = update_user.username.clone() {
-            user.username = username
+            user.username = username;
+        }
+        if let Some(password) = update_user.password.clone() {
+            user.password = password;
         }
         user.update(&conn).await;
-        Ok(Custom(Status::Accepted, json!({"message": "User udpated"})))
+        Ok(Custom(Status::Accepted, json!({"message": "User updated"})))
     } else {
         Err(Custom(
             Status::NotFound,
