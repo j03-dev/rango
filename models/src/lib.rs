@@ -3,7 +3,7 @@ use serde::Serialize;
 
 #[derive(Model, FromRow, Clone, Serialize, Debug)]
 pub struct User_ {
-    #[model(primary_key = true, auto=true)]
+    #[model(primary_key = true, auto = true)]
     pub id: Integer,
     #[model(unique = true, null = false)]
     pub username: String,
@@ -19,7 +19,7 @@ pub struct User_ {
 
 #[derive(Model, FromRow, Clone, Serialize)]
 pub struct Token {
-    #[model(primary_key = true, auto=true)]
+    #[model(primary_key = true, auto = true)]
     pub id: Integer,
     #[model(default = "now")]
     pub created_at: DateTime,

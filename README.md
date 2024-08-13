@@ -1,7 +1,7 @@
 # Rango Template
 
 - Rocket (Web FrameWork)
-- Turso (Database, Sqlite for production)
+- Sqlite/Postgres/Mysql (Database)
 - Rusql-Alchemy (ORM)
 
 ## Migrate the Model

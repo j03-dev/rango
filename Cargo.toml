@@ -4,7 +4,6 @@ members = ["app", "controllers", "migrate", "models"]
 
 
 [workspace.dependencies.rusql-alchemy]
-version = "0.3.0-rc"
 git = "https://github.com/j03-dev/rusql-alchemy"
 branch = "main"
 features = ["sqlite"]
