@@ -12,3 +12,4 @@ features = ["sqlite"]
 sqlx = "^0.8"
 serde = { version = "^1.0.203", features = ["derive"] }
 rocket = { version = "^0.5.0" }
+rocket_dyn_templates = { version = "0.2.0", features = ["minijinja"] }
