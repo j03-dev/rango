@@ -16,6 +16,7 @@ mod custom_response {
     type V = Custom<Value>;
     pub type Response = Result<V, V>;
 }
+mod pages;
 mod user;
 
 struct AppState {
@@ -40,6 +41,7 @@ pub fn controller() -> AdHoc {
 
     AdHoc::on_ignite("Controller", |rocket| async {
         rocket
+            .mount("/", routes![pages::index])
             .mount(
                 "/user",
                 routes![

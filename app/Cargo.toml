@@ -9,3 +9,4 @@ path = "../controllers"
 
 [dependencies]
 rocket = { workspace = true }
+rocket_dyn_templates = { workspace = true }
