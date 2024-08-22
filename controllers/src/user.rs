@@ -24,13 +24,13 @@ pub async fn register(new_user: Json<NewUser>, app_state: &State<AppState>) -> R
     let conn = app_state.conn.clone();
     if new_user.password == new_user.verification
         && UserModel::create(
-        kwargs!(
+            kwargs!(
                 username = new_user.username,
                 email = new_user.email,
                 password = hash(&new_user.password)
             ),
-        &conn,
-    )
+            &conn,
+        )
         .await
     {
         Ok(Custom(
@@ -54,8 +54,11 @@ pub struct Credential {
 #[post("/auth", format = "json", data = "<cred>")]
 pub async fn authentication(cred: Json<Credential>, app_state: &State<AppState>) -> Response {
     let conn = app_state.conn.clone();
-    if let Some(user) = UserModel::get(kwargs!(email == cred.email).and(kwargs!(password == hash(&cred.password))), &conn)
-        .await
+    if let Some(user) = UserModel::get(
+        kwargs!(email == cred.email).and(kwargs!(password == hash(&cred.password))),
+        &conn,
+    )
+    .await
     {
         let claims = RegisteredClaims {
             subject: Some(user.id.to_string()),
