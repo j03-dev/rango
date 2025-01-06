@@ -3,6 +3,7 @@ use crate::AppState;
 use super::custom_response::*;
 
 use models::User_ as UserModel;
+use models::Token;
 use rocket_security::{create_new_token, hash, Auth, RegisteredClaims};
 
 use rocket::State;
@@ -66,6 +67,9 @@ pub async fn authentication(cred: Json<Credential>, app_state: &State<AppState>)
             ..Default::default()
         };
         let token = create_new_token(claims).unwrap();
+        if let None = Token::get(kwargs!(owner == user.id), &conn).await {
+            Token::create(kwargs!(token = token), &conn).await;
+        }
         Ok(Custom(Status::Ok, json!({"user": user, "token": token})))
     } else {
         Err(Custom(
