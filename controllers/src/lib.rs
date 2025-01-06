@@ -23,7 +23,7 @@ struct AppState {
     conn: Connection,
 }
 
-pub fn controller() -> AdHoc {
+pub async fn controller() -> Result<AdHoc, rocket::Error> {
     let allowed_origins = AllowedOrigins::all();
     let allowed_methods = ["Get", "Post", "Patch", "Put", "Delete"]
         .iter()
@@ -39,7 +39,14 @@ pub fn controller() -> AdHoc {
     .to_cors()
     .expect("Some thing is wrong in Cors");
 
-    AdHoc::on_ignite("Controller", |rocket| async {
+    let database = Database::new().await.map_err(|error| {
+        rocket::Error::from(rocket::error::ErrorKind::Io(std::io::Error::new(
+            std::io::ErrorKind::ConnectionAborted,
+            error,
+        )))
+    })?;
+
+    let ad_hoc = AdHoc::on_ignite("Controller", |rocket| async {
         rocket
             .mount("/", routes![pages::index])
             .mount(
@@ -53,7 +60,9 @@ pub fn controller() -> AdHoc {
             )
             .attach(cors)
             .manage(AppState {
-                conn: Database::new().await.conn,
+                conn: database.conn,
             })
-    })
+    });
+
+    Ok(ad_hoc)
 }

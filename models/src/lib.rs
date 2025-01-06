@@ -5,14 +5,18 @@ use serde::Serialize;
 pub struct User_ {
     #[model(primary_key = true, auto = true)]
     pub id: Integer,
-    #[model(unique = true, null = false)]
+
+    #[model(unique = true)]
     pub username: String,
-    #[model(unique = true, null = false, size = 100)]
+
+    #[model(unique = true, size = 100)]
     pub email: String,
-    #[model(null = false)]
+
     pub password: String,
+
     #[model(default = "now")]
     pub created_at: DateTime,
+
     #[model(default = false)]
     pub is_admin: Boolean,
 }
@@ -21,10 +25,13 @@ pub struct User_ {
 pub struct Token {
     #[model(primary_key = true, auto = true)]
     pub id: Integer,
+
     #[model(default = "now")]
     pub created_at: DateTime,
-    #[model(null = false, unique = true)]
+
+    #[model(unique = true)]
     pub token: String,
-    #[model(foreign_key = "User_.id", unique = true, null = false)]
+
+    #[model(foreign_key = "User_.id", unique = true)]
     pub owner: Integer,
 }

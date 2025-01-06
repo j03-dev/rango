@@ -5,6 +5,6 @@ edition = "2021"
 
 
 [dependencies]
-rusql-alchemy = { workspace = true }
-sqlx = { workspace = true }
-serde = { workspace = true }
+rusql-alchemy.workspace = true
+sqlx.workspace = true
+serde.workspace = true

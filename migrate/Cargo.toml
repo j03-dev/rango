@@ -8,5 +8,5 @@ edition = "2021"
 path = "../models"
 
 [dependencies]
-rusql-alchemy = { workspace = true }
-tokio = { version = "^1.38.0", features = ["macros", "rt-multi-thread"] }
+rusql-alchemy.workspace = true
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }

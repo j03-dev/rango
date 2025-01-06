@@ -3,18 +3,14 @@ name = "controllers"
 version = "0.1.0"
 edition = "2021"
 
-[dependencies.rocket_security]
-version = "0.1.0"
-git = "https://github.com/j03-dev/rocket_security"
-branch = "main"
-
-[dependencies.models]
-path = "../models"
 
 [dependencies]
 rocket = { workspace = true, features = ["json"] }
-rocket_dyn_templates = { workspace = true }
-rocket_cors = "0.6.0"
-rusql-alchemy = { workspace = true }
-sqlx = { workspace = true }
-serde = { workspace = true }
+rocket_dyn_templates = { workspace = true, features = ["minijinja"] }
+rocket_cors.workspace = true
+rusql-alchemy = { workspace = true, features = ["sqlite"] }
+sqlx.workspace = true
+serde = { workspace = true, features = ["derive"] }
+rocket_security.workspace = true
+
+models.workspace = true
