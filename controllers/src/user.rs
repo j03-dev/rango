@@ -11,7 +11,7 @@ use rocket_security::{generate_jwt, Auth, Claims};
 use rusql_alchemy::prelude::*;
 use serde::Deserialize;
 
-const ONE_WEEK: usize = (3600 * 24) * 7;
+const ONE_WEEK: usize = 24 * 7;
 
 #[derive(Deserialize, Clone)]
 pub struct NewUser {
