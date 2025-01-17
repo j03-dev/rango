@@ -19,3 +19,4 @@ rocket_dyn_templates = "0.2.0"
 rocket_cors = "0.6.0"
 models = { path = "models" }
 tokio = "^1.38.0"
+bcrypt = "0.16.0"

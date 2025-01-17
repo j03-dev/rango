@@ -2,15 +2,16 @@ use crate::AppState;
 
 use super::custom_response::*;
 
-use models::User_ as UserModel;
 use models::Token;
-use rocket_security::{create_new_token, hash, Auth, RegisteredClaims};
+use models::User_ as UserModel;
 
+use bcrypt::{hash, verify, DEFAULT_COST};
 use rocket::State;
+use rocket_security::{generate_jwt, Auth, Claims};
 use rusql_alchemy::prelude::*;
 use serde::Deserialize;
 
-const ONE_WEEK: u64 = ((3600 * 24) * 7) as u64;
+const ONE_WEEK: usize = (3600 * 24) * 7;
 
 #[derive(Deserialize, Clone)]
 pub struct NewUser {
@@ -28,7 +29,7 @@ pub async fn register(new_user: Json<NewUser>, app_state: &State<AppState>) -> R
             kwargs!(
                 username = new_user.username,
                 email = new_user.email,
-                password = hash(&new_user.password)
+                password = hash(&new_user.password, DEFAULT_COST).unwrap()
             ),
             &conn,
         )
@@ -55,28 +56,24 @@ pub struct Credential {
 #[post("/auth", format = "json", data = "<cred>")]
 pub async fn authentication(cred: Json<Credential>, app_state: &State<AppState>) -> Response {
     let conn = app_state.conn.clone();
-    if let Some(user) = UserModel::get(
-        kwargs!(email == cred.email).and(kwargs!(password == hash(&cred.password))),
-        &conn,
-    )
-    .await
-    {
-        let claims = RegisteredClaims {
-            subject: Some(user.id.to_string()),
-            expiration: Some(ONE_WEEK),
-            ..Default::default()
-        };
-        let token = create_new_token(claims).unwrap();
-        if let None = Token::get(kwargs!(owner == user.id), &conn).await {
-            Token::create(kwargs!(token = token), &conn).await;
+    if let Some(user) = UserModel::get(kwargs!(email == cred.email), &conn).await {
+        if verify(&cred.password, &user.password).unwrap() {
+            let claims = Claims {
+                sub: user.id.to_string(),
+                exp: ONE_WEEK,
+                ..Default::default()
+            };
+            let token = generate_jwt(claims).unwrap();
+            if let None = Token::get(kwargs!(owner == user.id), &conn).await {
+                Token::create(kwargs!(token = token), &conn).await;
+            }
+            return Ok(Custom(Status::Ok, json!({"user": user, "token": token})));
         }
-        Ok(Custom(Status::Ok, json!({"user": user, "token": token})))
-    } else {
-        Err(Custom(
-            Status::Unauthorized,
-            json!({ "message": "email or password is invalid" }),
-        ))
     }
+    Err(Custom(
+        Status::Unauthorized,
+        json!({ "message": "email or password is invalid" }),
+    ))
 }
 
 #[get("/")]
