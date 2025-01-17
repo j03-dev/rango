@@ -12,5 +12,6 @@ rusql-alchemy = { workspace = true, features = ["sqlite"] }
 sqlx.workspace = true
 serde = { workspace = true, features = ["derive"] }
 rocket_security.workspace = true
-bcrypt.workspace = true
+argon2.workspace = true
 models.workspace = true
+anyhow.workspace = true

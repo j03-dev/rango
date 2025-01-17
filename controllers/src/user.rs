@@ -2,16 +2,28 @@ use crate::AppState;
 
 use super::custom_response::*;
 
+use argon2::{
+    password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
+    Argon2,
+};
 use models::Token;
 use models::User_ as UserModel;
 
-use bcrypt::{hash, verify, DEFAULT_COST};
 use rocket::State;
 use rocket_security::{generate_jwt, Auth, Claims};
 use rusql_alchemy::prelude::*;
 use serde::Deserialize;
 
 const ONE_WEEK: usize = 24 * 7;
+
+fn hash_password(password: &str) -> String {
+    let salt = SaltString::generate(&mut OsRng);
+    let argon2 = Argon2::default();
+    argon2
+        .hash_password(password.as_bytes(), &salt)
+        .expect("failed to hash the password")
+        .to_string()
+}
 
 #[derive(Deserialize, Clone)]
 pub struct NewUser {
@@ -29,7 +41,7 @@ pub async fn register(new_user: Json<NewUser>, app_state: &State<AppState>) -> R
             kwargs!(
                 username = new_user.username,
                 email = new_user.email,
-                password = hash(&new_user.password, DEFAULT_COST).unwrap()
+                password = hash_password(&new_user.password)
             ),
             &conn,
         )
@@ -57,7 +69,11 @@ pub struct Credential {
 pub async fn authentication(cred: Json<Credential>, app_state: &State<AppState>) -> Response {
     let conn = app_state.conn.clone();
     if let Some(user) = UserModel::get(kwargs!(email == cred.email), &conn).await {
-        if verify(&cred.password, &user.password).unwrap() {
+        let parsed_hash = PasswordHash::new(&user.password).unwrap();
+        if Argon2::default()
+            .verify_password(cred.password.as_bytes(), &parsed_hash)
+            .is_ok()
+        {
             let claims = Claims {
                 sub: user.id.to_string(),
                 exp: ONE_WEEK,
