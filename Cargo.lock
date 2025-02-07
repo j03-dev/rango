@@ -982,6 +982,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "inventory"
+version = "0.3.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "54b12ebb6799019b044deaf431eadfe23245b259bba5a2c0796acec3943a3cdb"
+dependencies = [
+ "rustversion",
+]
+
+[[package]]
 name = "is-terminal"
 version = "0.4.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1844,24 +1853,28 @@ dependencies = [
 
 [[package]]
 name = "rusql-alchemy"
-version = "0.4.1-rc"
-source = "git+https://github.com/j03-dev/rusql-alchemy?branch=main#1e9cdb1ae711d03d4e8ced422269cdca1ed31605"
+version = "0.4.3-rc"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0b952fee247d548f8c4ae52ac0a42d399e074c968f9eb6724a15899695828856"
 dependencies = [
  "anyhow",
  "async-trait",
  "dotenv",
+ "inventory",
  "lazy_static",
  "rusql-alchemy-macro",
  "serde",
  "serde_json",
+ "sqlformat 0.3.5",
  "sqlx",
  "tokio",
 ]
 
 [[package]]
 name = "rusql-alchemy-macro"
-version = "0.4.1-rc"
-source = "git+https://github.com/j03-dev/rusql-alchemy?branch=main#1e9cdb1ae711d03d4e8ced422269cdca1ed31605"
+version = "0.4.3-rc"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b4090e2a7d278b9a9d5fc2e6dd5d33d482b9bfa2cf58f94b5548201e22689df6"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2145,6 +2158,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "sqlformat"
+version = "0.3.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a0d7b3e8a3b6f2ee93ac391a0f757c13790caa0147892e3545cd549dd5b54bc0"
+dependencies = [
+ "unicode_categories",
+ "winnow",
+]
+
+[[package]]
 name = "sqlx"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2190,7 +2213,7 @@ dependencies = [
  "serde_json",
  "sha2",
  "smallvec",
- "sqlformat",
+ "sqlformat 0.2.4",
  "thiserror 1.0.63",
  "tokio",
  "tokio-stream",
@@ -2918,7 +2941,7 @@ version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf221c93e13a30d793f7645a0e7762c55d169dbb0a49671918a2319d289b10bb"
 dependencies = [
- "windows-sys 0.48.0",
+ "windows-sys 0.59.0",
 ]
 
 [[package]]
@@ -3095,9 +3118,9 @@ checksum = "589f6da84c646204747d1270a2a5661ea66ed1cced2631d546fdfb155959f9ec"
 
 [[package]]
 name = "winnow"
-version = "0.6.18"
+version = "0.6.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "68a9bda4691f099d435ad181000724da8e5899daa10713c2d432552b9ccd3a6f"
+checksum = "1e90edd2ac1aa278a5c4599b1d89cf03074b610800f866d4026dc199d7929a28"
 dependencies = [
  "memchr",
 ]

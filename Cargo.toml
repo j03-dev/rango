@@ -8,8 +8,7 @@ git = "https://github.com/j03-dev/rocket_security"
 branch = "main"
 
 [workspace.dependencies.rusql-alchemy]
-git = "https://github.com/j03-dev/rusql-alchemy"
-branch = "main"
+version = "0.4.3-rc"
 
 [workspace.dependencies]
 sqlx = "^0.8"

@@ -45,7 +45,7 @@ pub async fn register(new_user: Json<NewUser>, app_state: &State<AppState>) -> R
             ),
             &conn,
         )
-        .await
+        .await.is_ok()
     {
         Ok(Custom(
             Status::Created,
@@ -68,7 +68,7 @@ pub struct Credential {
 #[post("/auth", format = "json", data = "<cred>")]
 pub async fn authentication(cred: Json<Credential>, app_state: &State<AppState>) -> Response {
     let conn = app_state.conn.clone();
-    if let Some(user) = UserModel::get(kwargs!(email == cred.email), &conn).await {
+    if let Ok(Some(user)) = UserModel::get(kwargs!(email == cred.email), &conn).await {
         let parsed_hash = PasswordHash::new(&user.password).unwrap();
         if Argon2::default()
             .verify_password(cred.password.as_bytes(), &parsed_hash)
@@ -80,8 +80,8 @@ pub async fn authentication(cred: Json<Credential>, app_state: &State<AppState>)
                 ..Default::default()
             };
             let token = generate_jwt(claims).unwrap();
-            if let None = Token::get(kwargs!(owner == user.id), &conn).await {
-                Token::create(kwargs!(token = token), &conn).await;
+            if let Ok(None) = Token::get(kwargs!(owner == user.id), &conn).await {
+                Token::create(kwargs!(token = token), &conn).await.ok();
             }
             return Ok(Custom(Status::Ok, json!({"user": user, "token": token})));
         }
@@ -96,7 +96,7 @@ pub async fn authentication(cred: Json<Credential>, app_state: &State<AppState>)
 pub async fn retrieve(auth: Auth, app_state: &State<AppState>) -> Response {
     let conn = app_state.conn.clone();
     let id: i32 = auth.subject.parse().unwrap();
-    if let Some(user) = UserModel::get(kwargs!(id == id), &conn).await {
+    if let Ok(Some(user)) = UserModel::get(kwargs!(id == id), &conn).await {
         Ok(Custom(Status::Ok, json!(user)))
     } else {
         Err(Custom(
@@ -121,7 +121,7 @@ pub async fn update(
 ) -> Response {
     let conn = app_state.conn.clone();
     let id: i32 = auth.subject.parse().unwrap();
-    if let Some(mut user) = UserModel::get(kwargs!(id == id), &conn).await {
+    if let Ok(Some(mut user)) = UserModel::get(kwargs!(id == id), &conn).await {
         if let Some(email) = update_user.email.clone() {
             user.email = email;
         }
@@ -131,7 +131,7 @@ pub async fn update(
         if let Some(password) = update_user.password.clone() {
             user.password = password;
         }
-        user.update(&conn).await;
+        user.update(&conn).await.ok();
         Ok(Custom(Status::Accepted, json!({"message": "User updated"})))
     } else {
         Err(Custom(
