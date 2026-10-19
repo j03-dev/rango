@@ -9,4 +9,5 @@ path = "../models"
 
 [dependencies]
 rusql-alchemy.workspace = true
+rusql-alchemy-migration.workspace = true
 tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }

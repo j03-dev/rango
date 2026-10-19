@@ -1,0 +1,2 @@
+DROP TABLE User_;
+DROP TABLE Token;

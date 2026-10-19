@@ -3,35 +3,37 @@ use serde::Serialize;
 
 #[derive(Model, FromRow, Clone, Serialize, Debug)]
 pub struct User_ {
-    #[model(primary_key = true, auto = true)]
+    #[field(primary_key = true, auto = true)]
     pub id: Integer,
 
-    #[model(unique = true)]
+    #[field(unique = true)]
     pub username: String,
 
-    #[model(unique = true, size = 100)]
+    #[field(unique = true, size = 100)]
     pub email: String,
 
     pub password: String,
 
-    #[model(default = "now")]
+    pub verify_password: String,
+
+    #[field(default = "now")]
     pub created_at: DateTime,
 
-    #[model(default = false)]
+    #[field(default = false)]
     pub is_admin: Boolean,
 }
 
 #[derive(Model, FromRow, Clone, Serialize)]
 pub struct Token {
-    #[model(primary_key = true, auto = true)]
+    #[field(primary_key = true, auto = true)]
     pub id: Integer,
 
-    #[model(default = "now")]
+    #[field(default = "now")]
     pub created_at: DateTime,
 
-    #[model(unique = true)]
+    #[field(unique = true)]
     pub token: String,
 
-    #[model(foreign_key = "User_.id", unique = true)]
+    #[field(foreign_key = User_.id, on_delete = "cascade", unique = true)]
     pub owner: Integer,
 }

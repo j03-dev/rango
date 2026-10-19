@@ -6,5 +6,7 @@ edition = "2021"
 
 [dependencies]
 rusql-alchemy.workspace = true
+tokio.workspace = true
+rusql-alchemy-migration.workspace = true
 sqlx.workspace = true
 serde.workspace = true

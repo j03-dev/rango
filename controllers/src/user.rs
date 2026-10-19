@@ -3,8 +3,10 @@ use crate::AppState;
 use super::custom_response::*;
 
 use argon2::{
-    password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
+    password_hash::{PasswordHasher, PasswordVerifier},
+    password_hash::phc::PasswordHash,
     Argon2,
+
 };
 use models::Token;
 use models::User_ as UserModel;
@@ -17,10 +19,9 @@ use serde::Deserialize;
 const ONE_WEEK: usize = 24 * 7;
 
 fn hash_password(password: &str) -> String {
-    let salt = SaltString::generate(&mut OsRng);
     let argon2 = Argon2::default();
     argon2
-        .hash_password(password.as_bytes(), &salt)
+        .hash_password(password.as_bytes())
         .expect("failed to hash the password")
         .to_string()
 }

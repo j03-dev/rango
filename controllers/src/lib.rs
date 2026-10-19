@@ -39,7 +39,7 @@ pub async fn controller() -> Result<AdHoc, rocket::Error> {
     .to_cors()
     .expect("Some thing is wrong in Cors");
 
-    let database = Database::new().await.map_err(|error| {
+    let database = Database::new("sqlite://test.db").await.map_err(|error| {
         rocket::Error::from(rocket::error::ErrorKind::Io(std::io::Error::new(
             std::io::ErrorKind::ConnectionAborted,
             error,

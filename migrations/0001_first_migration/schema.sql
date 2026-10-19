@@ -1,0 +1,3 @@
+create table if not exists RusqlAlchemyMigration (version varchar(255) primary key not null, name varchar(255) not null, checksum varchar(255) not null);
+create table if not exists Token (id integer primary key autoincrement not null, created_at varchar(40) default current_timestamp not null, token varchar(255) unique not null, owner integer unique not null references User_ (id) on delete cascade);
+create table if not exists User_ (id integer primary key autoincrement not null, username varchar(255) unique not null, email varchar(100) unique not null, password varchar(255) not null, verify_password varchar(255) not null, created_at varchar(40) default current_timestamp not null, is_admin bool default 0 not null);
