@@ -8,15 +8,15 @@ git = "https://github.com/j03-dev/rocket_security"
 branch = "main"
 
 [workspace.dependencies.rusql-alchemy]
-path = "../rusql-alchemy/rusql-alchemy"
+version = "0.6.0"
 features = ["sqlite"]
 
 [workspace.dependencies.rusql-alchemy-migration]
-path = "../rusql-alchemy/rusql-alchemy-migration"
+version = "0.6.0"
 features = ["sqlite"]
 
 [workspace.dependencies]
-sqlx = "0.8"
+sqlx = "0.9"
 serde = "1.0.229"
 rocket = "0.5.1"
 rocket_dyn_templates = "0.2.0"

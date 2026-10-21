@@ -1,7 +1,7 @@
 use rusql_alchemy::prelude::*;
 use serde::Serialize;
 
-#[derive(Model, FromRow, Clone, Serialize, Debug)]
+#[derive(Model, Clone, FromRow, Serialize, Debug)]
 pub struct User_ {
     #[field(primary_key = true, auto = true)]
     pub id: Integer,
@@ -14,8 +14,6 @@ pub struct User_ {
 
     pub password: String,
 
-    pub verify_password: String,
-
     #[field(default = "now")]
     pub created_at: DateTime,
 
@@ -23,7 +21,7 @@ pub struct User_ {
     pub is_admin: Boolean,
 }
 
-#[derive(Model, FromRow, Clone, Serialize)]
+#[derive(Model, Clone, FromRow, Serialize)]
 pub struct Token {
     #[field(primary_key = true, auto = true)]
     pub id: Integer,
@@ -37,3 +35,4 @@ pub struct Token {
     #[field(foreign_key = User_.id, on_delete = "cascade", unique = true)]
     pub owner: Integer,
 }
+
